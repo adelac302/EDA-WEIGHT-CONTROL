@@ -20,15 +20,11 @@ MES = 10
 
 
 # In[31]:
-
-
 df=pd.read_excel(r"C:\Users\adelacruz\OneDrive - Minera Boroo Misquichilca S.A\Escritorio\DESCARGAS_LN.xlsx")
 df
 
 
 # In[32]:
-
-
 #filtro para las condiciones de las cargas 10 10 20 
 conditions = [
     (df['Ton_Med'] >= 200),
@@ -54,35 +50,25 @@ df
 
 
 # In[33]:
-
-
 #FILTRADO POR CANTIDAD DE TONELAJE
 df1=df[df['Ton_Med']>0]
 df1
 
 
 # In[34]:
-
-
 df1.info()
 
 
 # In[35]:
-
-
 df1.describe().T
 
 
 # In[36]:
-
-
 df1['Descarga'].unique
 df1.groupby(['Descarga']).mean('Ton_Med')
 
 
-# In[37]:
-
-
+# In[37]
 #FILTRADO POR ZONA DE DESCARGA
 df1['Descarga']=[s.strip() for s in df1['Descarga']]
 df1['Pala']=[s.strip() for s in df1['Pala']]
@@ -91,15 +77,11 @@ df1
 
 
 # In[38]:
-
-
 df1.groupby(['Camion']).mean('Ton_Med')
 df1['Camion'].value_counts()
 
 
 # In[39]:
-
-
 camiones = df1['Camion'].unique()
 camiones_ordenados = sorted(camiones)  
 num_camiones = len(camiones_ordenados)
@@ -123,8 +105,6 @@ plt.show()
 
 
 # In[40]:
-
-
 plt.figure(figsize=(14,3))
 sns.violinplot(x=df1["Ton_Med"], width=1);
 plt.axvline(np.percentile(df1["Ton_Med"],10), label='10%', c='orange', linestyle=':', linewidth=1)
@@ -139,16 +119,12 @@ plt.title('weight control')
 
 
 # In[44]:
-
-
 a2=df1["categoria"].value_counts().sort_values(ascending=False)
 df1["categoria"].hist(figsize=(8,8))
 a2
 
 
 # In[42]:
-
-
 resumen = df1.groupby(['Camion', 'pesaje'])['pesaje'].count().unstack(fill_value=1)
 resumen['TOTAL'] = resumen.sum(axis=1)
 resumen['PROB_NORMAL_W'] = resumen['NORMAL_W']*100 / resumen['TOTAL']
